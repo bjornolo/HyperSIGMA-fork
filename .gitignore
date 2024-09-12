@@ -1,0 +1,10 @@
+#GITIGNORE
+
+# Ignore all folders in this directory
+**weights/
+**result/
+
+# Ignore all files in this directory
+*.pth
+*.pyc
+__pycache__/
