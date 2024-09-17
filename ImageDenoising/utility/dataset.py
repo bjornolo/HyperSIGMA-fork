@@ -765,8 +765,8 @@ def addNoiseInpainting(srcdir,dstdir):
 
 
 if __name__ == '__main__':
-    srcdir = '/mnt/code/users/yuchunmiao/hypersigma-master/data/Hyperspectral_Project/WDC/test'   #file path of original file
-    dstdir = '/mnt/code/users/yuchunmiao/hypersigma-master/data/Hyperspectral_Project/WDC/test_noise/complex' #file path to put the testing file
+    srcdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/test'   #file path of original file
+    dstdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/test_noise/complex' #file path to put the testing file
     # addNoiseComplex(srcdir,dstdir)
     # addNoiseGaussian(srcdir,dstdir)
     addNoiseInpainting(srcdir,dstdir)

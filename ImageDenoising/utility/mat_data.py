@@ -9,13 +9,12 @@ from util import crop_center, Visualize3D, minmax_normalize, rand_crop,BandMinMa
 from PIL import Image
 from skimage import io
 import torch
-data_path = '/data/HSI_Data/'  #change to datadir
+data_path = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/'  #change to datadir
 
 
 def create_WDC_dataset():
     imgpath = data_path+'Hyperspectral_Project/dc.tif'
     imggt = io.imread(imgpath)
-    # 转为mat
     imggt = torch.tensor(imggt, dtype=torch.float)
     test = imggt[:, 600:800, 50:250].clone()
     train_0 = imggt[:, :600, :].clone()
@@ -37,7 +36,12 @@ def create_WDC_dataset():
     normalizer.fit([val])
     val = normalizer.transform(val).cpu().numpy()
 
-    savemat("/WDC/train/train_0.mat", {'data': train_0})
+    # Create directories if they don't exist
+    os.makedirs("WDC/train", exist_ok=True)
+    os.makedirs("WDC/test", exist_ok=True)
+    os.makedirs("WDC/val", exist_ok=True)
+
+    savemat("WDC/train/train_0.mat", {'data': train_0})
     savemat("WDC/train/train_1.mat", {'data': train_1})
     savemat("WDC/test/test.mat", {'data': test})
     savemat("WDC/val/val.mat", {'data': val})

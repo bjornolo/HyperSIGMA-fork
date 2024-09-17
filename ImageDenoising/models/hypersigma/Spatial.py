@@ -492,7 +492,7 @@ class SpatialVisionTransformer(nn.Module):
         if isinstance(pretrained, str):
             self.apply(_init_weights)
 
-            checkpoint = torch.load(pretrained, map_location='cpu')
+            checkpoint = torch.load(pretrained, map_location='cpu', weights_only=False)
 
             if 'state_dict' in checkpoint:
                 state_dict = checkpoint['state_dict']

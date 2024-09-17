@@ -34,6 +34,20 @@ def create_lmdb_train(
                 
         return new_data.astype(np.float32)
 
+    # Calculate map_size
+    total_size = 0
+    for fn in fns:
+        try:
+            X = load(datadir + fn)[matkey]
+        except:
+            print('loading', datadir+fn, 'fail')
+            continue
+        total_size += X.nbytes
+    map_size_check = total_size * 30  # Add some buffer to the map size
+    map_size_gb = map_size_check / (1024 ** 3)
+    print(f"Total data size (GB): {total_size / (1024 ** 3)}")
+    print(f"Map size (GB): {map_size_gb}")
+
     np.random.seed(seed)
     scales = list(scales)
     ksizes = list(ksizes)        
@@ -49,11 +63,14 @@ def create_lmdb_train(
     
     #import ipdb; ipdb.set_trace()
 
-    print(name+'.db')
+    print('name: '+name+'.db')
     if os.path.exists(name+'.db'):
         raise Exception('database already exist!')
-    env = lmdb.open(name+'.db', map_size=map_size, writemap=True)
+    # env = lmdb.open(name+'.db', map_size=map_size, writemap=True)
+    env = lmdb.open(name+'.db', map_size=map_size_check, writemap=True)
     txt_file = open(os.path.join(name+'.db', 'meta_info.txt'), 'w')
+    # env = lmdb.open(name, map_size=map_size, writemap=True)
+    # txt_file = open(os.path.join(name, 'meta_info.txt'), 'w')
     with env.begin(write=True) as txn:
         # txn is a Transaction object
         k = 0
@@ -78,12 +95,12 @@ def create_lmdb_train(
         
 def createDCmall():
     print('create wdc...')
-    datadir = '/data/HSI_Data/Hyperspectral_Project/WDC/train/'
+    datadir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/train/'
     fns = os.listdir(datadir) 
     
     fns = [fn.split('.')[0]+'.mat' for fn in fns]
     create_lmdb_train(
-        datadir, fns, '/data/HSI_Data/Hyperspectral_Project/WDC/wdc', 'data',  # your own dataset address
+        datadir, fns, '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/wdc', 'data',  # your own dataset address
         crop_sizes=None,
         scales=(1, 0.5, 0.25),        
         ksizes=(191, 64, 64),

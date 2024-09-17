@@ -63,14 +63,14 @@ def train_options(parser):
                         help='which loss to choose.', choices=['l1', 'l2', 'smooth_l1', 'ssim', 'l2_ssim','l2_sam','cons','cons_l2','char'])
     parser.add_argument('--testdir', type=str)
     parser.add_argument('--sigma', type=int)
-    parser.add_argument('--training_dataset_path', type=str, default='/mnt/code/users/yuchunmiao/hypersigma-master/data/Hyperspectral_Project/WDC/wdc_64.db')
-    parser.add_argument('--pretrain', type=str, default='/mnt/code/users/yuchunmiao/hypersigma-master/pre_train/checkpoint-400.pth')
+    parser.add_argument('--training_dataset_path', type=str, default='/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/wdc_64.db')
+    parser.add_argument('--pretrain', type=str, default='/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/pre_train/checkpoint-400.pth')
 
     parser.add_argument('--init', type=str, default='kn',
                         help='which init scheme to choose.', choices=['kn', 'ku', 'xn', 'xu', 'edsr'])
     parser.add_argument('--no-cuda', action='store_true', help='disable cuda?')
     parser.add_argument('--from_scratch', action='store_true', help='disable cuda?')
-    parser.add_argument('--pretrain_path', type=str, default='/mnt/code/users/yuchunmiao/hypersigma-master/pre_train/checkpoint-400.pth')
+    parser.add_argument('--pretrain_path', type=str, default='/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/pre_train/checkpoint-400.pth')
     parser.add_argument('--no-log', action='store_true',
                         help='disable logger?')
     parser.add_argument('--threads', type=int, default=1,
@@ -432,7 +432,7 @@ class Engine(object):
         all_input = self.concate(inputs_blocks)
         all_gt = self.concate(gt_blocks)
 
-        save_dir = f"/mnt/code/users/yuchunmiao/hypersigma-master/data/Hyperspectral_Project/WDC/results/{self.opt.arch}/"
+        save_dir = f"/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/results/{self.opt.arch}/"
         save_target = os.path.join(save_dir, f"{self.opt.arch}_{os.path.basename(self.opt.testdir)}.mat")
         
         if not os.path.isdir(save_dir):

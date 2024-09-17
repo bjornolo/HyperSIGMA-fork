@@ -3,8 +3,15 @@
 # Ignore all folders in this directory
 **weights/
 **result/
+**data/
+**output/
+**original_test/
 
 # Ignore all files in this directory
 *.pth
 *.pyc
+*.Identifier
+
+
+# Ignore all folders in this directory
 __pycache__/
