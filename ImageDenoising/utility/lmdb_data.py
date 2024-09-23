@@ -108,5 +108,21 @@ def createDCmall():
         load=scio.loadmat, augment=True,
     )
 
+def createHYPSO():
+    print('create HYPSO...')
+    datadir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO/train/'
+    fns = os.listdir(datadir) 
+    
+    fns = [fn.split('.')[0]+'.mat' for fn in fns]
+    create_lmdb_train(
+        datadir, fns, '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO/hypso', 'data',  # your own dataset address
+        crop_sizes=None,
+        scales=(1, 0.5, 0.25),        
+        ksizes=(191, 64, 64),
+        strides=[(191, 16, 16), (191, 8, 8), (191, 8, 8)],          
+        load=scio.loadmat, augment=True,
+    )
+
 if __name__ == '__main__':
-    createDCmall()
+    # createDCmall()
+    createHYPSO()

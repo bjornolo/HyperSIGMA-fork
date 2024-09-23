@@ -51,7 +51,8 @@ if __name__ == '__main__':
 
     """Test-Dev"""
     # basefolder = '/mnt/code/users/yuchunmiao/hypersigma-master/data/Hyperspectral_Project/WDC/test_noise/complex/patch_mixture/'
-    basefolder = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/test_noise/complex/patch_mixture/'
+    # basefolder = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/test_noise/complex/patch_mixture/'
+    basefolder = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO/test_noise/Cases/Case4'
     
     mat_datasets = [MatDataFromFolder(basefolder) ]
     # mat_datasets = [MatDataFromFolder(
