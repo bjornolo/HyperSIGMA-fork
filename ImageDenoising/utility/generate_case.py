@@ -713,11 +713,13 @@ def addNoiseGaussian(srcdir,dstdir):
 def addNoiseCases(srcdir,dstdir):
     sigmas = [30,50,70,90]
     noise_models = []
-    names = ['Case2','Case3','Case4']
-
+    names = ['Case1', 'Case2','Case3','Case4', 'Case5']
+    noise_models.append(AddNoiseNoniid(sigmas))
     noise_models.append(Compose([AddNoiseNoniid(sigmas), AddNoiseCase2()]))
     noise_models.append(Compose([AddNoiseNoniid(sigmas), AddNoiseCase3()]))
     noise_models.append(Compose([AddNoiseNoniid(sigmas), AddNoiseCase4()]))
+    noise_models.append(Compose([AddNoiseNoniid(sigmas), AddNoiseCase5()]))
+    
 
     for noise_name,noise_model in zip(names,noise_models):
         dstdir_noise = dstdir+'/'+noise_name
@@ -739,8 +741,8 @@ def addNoiseCases(srcdir,dstdir):
             savemat(os.path.join(dstdir_noise, filename), {'gt': loadmat(os.path.join(srcdir, filename))['data'][:,0:192, 0:192], 'input': noisyhsi[:,0:192, 0:192]})
 
 if __name__ == '__main__':
-    srcdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO/test'   #file path of original file
-    dstdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO/test_noise/Cases' #file path to put the testing file
+    srcdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO2/test'   #file path of original file
+    dstdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO2/test_noise/Cases' #file path to put the testing file
     addNoiseCases(srcdir,dstdir)
 
 
