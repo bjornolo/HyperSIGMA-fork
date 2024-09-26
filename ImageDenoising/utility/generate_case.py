@@ -738,6 +738,7 @@ def addNoiseCases(srcdir,dstdir):
             print(dstdir_noise,filepath)
             # savemat(os.path.join(dstdir_noise, filename), {'gt': srchsi.transpose(
             #    1, 2, 0), 'input': noisyhsi.transpose(1, 2, 0)})
+            #TODO: test 120x120x120 cubes
             savemat(os.path.join(dstdir_noise, filename), {'gt': loadmat(os.path.join(srcdir, filename))['data'][:,0:192, 0:192], 'input': noisyhsi[:,0:192, 0:192]})
 
 if __name__ == '__main__':

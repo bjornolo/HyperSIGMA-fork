@@ -5,6 +5,7 @@ from .Spatial import SpatialVisionTransformer
 from .Spectral import SpectralVisionTransformer
 from .Spatial_route import Adpater
 from .Spectral_route import Adapter_Spectral
+
 class SSFusionFramework(torch.nn.Module):
     def __init__(self, img_size = None, in_channels = None):
         super(SSFusionFramework, self).__init__()
@@ -28,7 +29,7 @@ class SSFusionFramework(torch.nn.Module):
             use_abs_pos_emb=True,
             interval = 3,
             n_points=8,
-            original_channels=191
+            original_channels=191-71 #TODO: REMEMBER CHANNELS BJORNOLAV
         )
 
         NUM_TOKENS = 100
@@ -70,7 +71,7 @@ class SSFusionFramework(torch.nn.Module):
             use_abs_pos_emb=True,
             interval = 3,
             n_points=8,
-            original_channels=191
+            original_channels=191-71 #TODO: REMEMBER CHANNELS BJORNOLAV
         )
 
         self.adapter_spec =  Adapter_Spectral(
@@ -107,12 +108,13 @@ class SSFusionFramework(torch.nn.Module):
         self.fc_spec = nn.Sequential(
             nn.Linear(NUM_TOKENS, 128, bias=False),
             nn.ReLU(inplace=True),
-            nn.Linear(128, 191, bias=False),
+            nn.Linear(128, 191-71, bias=False), #TODO: REMEMBER CHANNELS BJORNOLAV
             nn.Sigmoid(),
         )
 
-        self.conv3_reconstruct = nn.Conv2d(382, 191, kernel_size=3, padding=1)
-        self.conv_tail = nn.Conv2d(191, 191, kernel_size=3, padding=1)
+        # self.conv3_reconstruct = nn.Conv2d(382-71*2, 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
+        self.conv3_reconstruct = nn.Conv2d(240, 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
+        self.conv_tail = nn.Conv2d(191-71, 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
 
     def forward(self, x):
         # spat
@@ -141,7 +143,7 @@ class SSFusionFramework(torch.nn.Module):
 def spat_vit_b_rvsa(args=None):
     model = SSFusionFramework(
         img_size=64,
-        in_channels=191,
+        in_channels=191-71, #TODO: REMEMBER CHANNELS BJORNOLAV
     )
     return model
 
@@ -150,7 +152,7 @@ if __name__ == "__main__":
     backbone = spat_vit_b_rvsa()
     backbone.cuda()
     backbone.eval()
-    input = torch.Tensor(2, 191, 64, 64).cuda()
+    input = torch.Tensor(2, 191-71, 64, 64).cuda() #TODO: REMEMBER CHANNELS BJORNOLAV
     out = backbone(input)
     print(out.shape)
 

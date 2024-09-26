@@ -364,11 +364,12 @@ class Norm2d(nn.Module):
 class SpatViT(nn.Module):
     """ Vision Transformer with support for patch or hybrid CNN input stage
     """
+    #TODO: REMEMBER CHANNELS BJORNOLAV
     def __init__(self, img_size=224, patch_size=16, in_chans=3, num_classes=80, embed_dim=768, depth=12,
                  num_heads=12, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop_rate=0., attn_drop_rate=0.,
                  drop_path_rate=0., hybrid_backbone=None, norm_layer=None, init_values=None, use_checkpoint=False, 
                  use_abs_pos_emb=False, use_rel_pos_bias=False, use_shared_rel_pos_bias=False,
-                 out_indices=[11], interval=3, pretrained=None, restart_regression=True, n_points=8, original_channels=191):
+                 out_indices=[11], interval=3, pretrained=None, restart_regression=True, n_points=8, original_channels=191-71): #HERE
         super().__init__()
         self.patch_size = patch_size
         norm_layer = norm_layer or partial(nn.LayerNorm, eps=1e-6)
@@ -629,8 +630,8 @@ class SpatViT(nn.Module):
         x = self.conv_tail(x)
         return x
 
-    
-def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
+    #TODO: REMEMBER CHANNELS BJORNOLAV
+def spat_vit_b_rvsa(inchannels=100, original_channels=191-71, img_size=64, args=None):
 
     model = SpatViT(
             img_size=img_size,
@@ -667,8 +668,8 @@ def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=Non
     return model
 
 
-
-def spat_vit_l_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
+#TODO: REMEMBER CHANNELS BJORNOLAV
+def spat_vit_l_rvsa(inchannels=100, original_channels=191-71, img_size=64, args=None):
 
     model = SpatViT(
             img_size=img_size,
@@ -730,10 +731,10 @@ def spat_vit_h_rvsa(args, inchannels=3):
     
     
 if __name__ == "__main__":
-
+#TODO: REMEMBER CHANNELS BJORNOLAV
     model = SpatViT(
         img_size=64,
-        in_chans=191,
+        in_chans=191-71, #HERE
         patch_size=2,
         drop_path_rate=0.1,
         out_indices=[3, 5, 7, 11],
@@ -748,12 +749,12 @@ if __name__ == "__main__":
         use_checkpoint=False,
         use_abs_pos_emb=False,
         interval = 3,
-        original_channels=191
+        original_channels=191-71 #HERE
     ).cuda()
     
     model.eval()
 
-    input = torch.Tensor(1, 191, 64, 64).cuda()
+    input = torch.Tensor(1, 120, 64, 64).cuda() #HERE
 
     # path="/mnt/code/users/yuchunmiao/hypersigma-master/data/Hyperspectral_Project/WDC/test_noise/complex/512_inpainting/test.mat"
     # input=torch.from_numpy(np.expand_dims(scio.loadmat(path)['input'].transpose(2,0,1), axis=0))[:,:,0:128,0:128].cuda()

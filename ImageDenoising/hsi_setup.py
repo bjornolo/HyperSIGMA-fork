@@ -440,8 +440,9 @@ class Engine(object):
         scio.savemat(save_target, {'gt': all_gt.transpose(1,2,0), 'input': all_input.transpose(1,2,0), 'output': all_output.transpose(1,2,0)})
         
     def concate(self, blocks):
-        original_shape=(191,192,192)
-        # original_shape=(191,200,200)
+        #TODO: REMEMBER CHANNELS BJORNOLAV
+        original_shape=(191-71 ,192,192)
+        # original_shape=(191,192,192)
         new_tensor = np.zeros(original_shape)
         block_shape = blocks[0].shape
         idx = 0

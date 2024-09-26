@@ -29,8 +29,8 @@ def create_WDC_dataset():
 
     #HYPSO values
     test = imggt[:, 600:800, 50:250].clone()
-    train_0 = imggt[:, :600, 100:-100].clone()
-    train_1 = imggt[:, 800:, 100:-100].clone()
+    train_0 = imggt[:, :600, :307].clone()
+    train_1 = imggt[:, 800:, :307].clone()
     val = imggt[:, 600:656, 251:307].clone()
 
     

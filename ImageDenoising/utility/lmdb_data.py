@@ -96,14 +96,14 @@ def createDCmall():
     print('create wdc...')
     datadir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/train/'
     fns = os.listdir(datadir) 
-    
     fns = [fn.split('.')[0]+'.mat' for fn in fns]
+    bands =191
     create_lmdb_train(
         datadir, fns, '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/wdc', 'data',  # your own dataset address
         crop_sizes=None,
         scales=(1, 0.5, 0.25),        
-        ksizes=(191, 64, 64),
-        strides=[(191, 16, 16), (191, 8, 8), (191, 8, 8)],          
+        ksizes=(bands, 64, 64),
+        strides=[(bands, 16, 16), (bands, 8, 8), (bands, 8, 8)],          
         load=scio.loadmat, augment=True,
     )
 
@@ -112,8 +112,8 @@ def createHYPSO_resized():
     datadir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO/train/'
     # datadir = './data/HSI_Data/Hyperspectral_Project/HYPSO/train/'
     fns = os.listdir(datadir) 
-    
     fns = [fn.split('.')[0]+'.mat' for fn in fns]
+    bands =191
     create_lmdb_train(
         datadir=datadir, 
         fns=fns, 
@@ -122,8 +122,8 @@ def createHYPSO_resized():
         matkey='data',  # your own dataset address
         crop_sizes=None,
         scales=(1, 0.5, 0.25),        
-        ksizes=(191, 64, 64),
-        strides=[(191, 16, 16), (191, 8, 8), (191, 8, 8)],          
+        ksizes=(bands, 64, 64),
+        strides=[(bands, 16, 16), (bands, 8, 8), (bands, 8, 8)],          
         load=scio.loadmat,
         augment=True
     )
