@@ -15,8 +15,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Hyperspectral Image Denoising (Complex noise)')
     opt = train_options(parser)
+    print(f"----options----")
     print(opt)
-
+    print(f"--options end--")
     """Setup Engine"""
     engine = Engine(opt)
 
@@ -62,7 +63,7 @@ if __name__ == '__main__':
     engine.epoch  = 0
     
     strart_time = time.time()
-    print(strart_time)
+    print('start-time: ',strart_time)
     engine.test(mat_loaders[0], basefolder)
     end_time = time.time()
     test_time = end_time-strart_time

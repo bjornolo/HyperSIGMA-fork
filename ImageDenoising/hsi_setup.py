@@ -431,8 +431,9 @@ class Engine(object):
         all_output = self.concate(blocks)
         all_input = self.concate(inputs_blocks)
         all_gt = self.concate(gt_blocks)
-
-        save_dir = f"/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/results/{self.opt.arch}/"
+        ##TODO: SAVE DIR FOR RESULTS
+        save_dir = f"/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO2/results/{self.opt.arch}/"
+        print(save_dir)
         save_target = os.path.join(save_dir, f"{self.opt.arch}_{os.path.basename(self.opt.testdir)}.mat")
         
         if not os.path.isdir(save_dir):
