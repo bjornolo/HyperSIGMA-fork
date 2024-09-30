@@ -738,12 +738,12 @@ def addNoiseCases(srcdir,dstdir):
             print(dstdir_noise,filepath)
             # savemat(os.path.join(dstdir_noise, filename), {'gt': srchsi.transpose(
             #    1, 2, 0), 'input': noisyhsi.transpose(1, 2, 0)})
-            #TODO: test 120x120x120 cubes
-            savemat(os.path.join(dstdir_noise, filename), {'gt': loadmat(os.path.join(srcdir, filename))['data'][:,0:192, 0:192], 'input': noisyhsi[:,0:192, 0:192]})
+            # savemat(os.path.join(dstdir_noise, filename), {'gt': loadmat(os.path.join(srcdir, filename))['data'][:,0:192, 0:192], 'input': noisyhsi[:,0:192, 0:192]})
+            savemat(os.path.join(dstdir_noise, filename), {'gt': srchsi, 'input': noisyhsi})
 
 if __name__ == '__main__':
-    srcdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO2/test'   #file path of original file
-    dstdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO2/test_noise/Cases' #file path to put the testing file
+    srcdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO2/train'   #file path of original file
+    dstdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO2/train_noise/Cases' #file path to put the testing file
     addNoiseCases(srcdir,dstdir)
 
 
