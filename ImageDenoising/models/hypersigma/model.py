@@ -10,6 +10,7 @@ class SSFusionFramework(torch.nn.Module):
     def __init__(self, img_size = None, in_channels = None):
         super(SSFusionFramework, self).__init__()
 
+        # self.channels=in_channels
         # encoder
         self.spat_encoder =  SpatialVisionTransformer(
             img_size=img_size,
@@ -29,7 +30,8 @@ class SSFusionFramework(torch.nn.Module):
             use_abs_pos_emb=True,
             interval = 3,
             n_points=8,
-            original_channels=191-71 #TODO: REMEMBER CHANNELS BJORNOLAV
+            # original_channels=191-71 #TODO: REMEMBER CHANNELS BJORNOLAV
+            original_channels=in_channels 
         )
 
         NUM_TOKENS = 100
@@ -71,7 +73,8 @@ class SSFusionFramework(torch.nn.Module):
             use_abs_pos_emb=True,
             interval = 3,
             n_points=8,
-            original_channels=191-71 #TODO: REMEMBER CHANNELS BJORNOLAV
+            # original_channels=191-71 #TODO: REMEMBER CHANNELS BJORNOLAV
+            original_channels=in_channels 
         )
 
         self.adapter_spec =  Adapter_Spectral(
@@ -108,13 +111,15 @@ class SSFusionFramework(torch.nn.Module):
         self.fc_spec = nn.Sequential(
             nn.Linear(NUM_TOKENS, 128, bias=False),
             nn.ReLU(inplace=True),
-            nn.Linear(128, 191-71, bias=False), #TODO: REMEMBER CHANNELS BJORNOLAV
+            # nn.Linear(128, 191-71, bias=False), #TODO: REMEMBER CHANNELS BJORNOLAV
+            nn.Linear(128, in_channels, bias=False), 
             nn.Sigmoid(),
         )
 
-        # self.conv3_reconstruct = nn.Conv2d(382-71*2, 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
-        self.conv3_reconstruct = nn.Conv2d(240, 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
-        self.conv_tail = nn.Conv2d(191-71, 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
+        # self.conv3_reconstruct = nn.Conv2d(382-(71*2), 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
+        self.conv3_reconstruct = nn.Conv2d(in_channels*2, in_channels, kernel_size=3, padding=1) 
+        # self.conv_tail = nn.Conv2d(191-71, 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
+        self.conv_tail = nn.Conv2d(in_channels, in_channels, kernel_size=3, padding=1) 
 
     def forward(self, x):
         # spat
@@ -140,19 +145,19 @@ class SSFusionFramework(torch.nn.Module):
         return x
 
 
-def spat_vit_b_rvsa(args=None):
+def spat_vit_b_rvsa(args=None, in_channels=120):
     model = SSFusionFramework(
         img_size=64,
-        in_channels=191-71, #TODO: REMEMBER CHANNELS BJORNOLAV
+        in_channels=in_channels, #TODO: REMEMBER CHANNELS BJORNOLAV
     )
     return model
 
 if __name__ == "__main__":
-
-    backbone = spat_vit_b_rvsa()
+    image_channels=191
+    backbone = spat_vit_b_rvsa(in_channels=image_channels)
     backbone.cuda()
     backbone.eval()
-    input = torch.Tensor(2, 191-71, 64, 64).cuda() #TODO: REMEMBER CHANNELS BJORNOLAV
+    input = torch.Tensor(2, image_channels, 64, 64).cuda() #TODO: REMEMBER CHANNELS BJORNOLAV
     out = backbone(input)
     print(out.shape)
 

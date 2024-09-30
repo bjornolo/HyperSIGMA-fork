@@ -10,11 +10,12 @@ from PIL import Image
 from skimage import io
 import torch
 import rasterio
-data_path = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/HYPSO2/'  #change to datadir
+data_path = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/GLORIA/'  #change to datadir
+image_name = 'gloria_2024-09-24T08-30-46Z-l1a.tif'
 
 
 def create_WDC_dataset():
-    imgpath = data_path+'vb_a.tif'
+    imgpath = data_path+image_name
     # imggt = io.imread(imgpath)
     with rasterio.open(imgpath) as dataset:
         imggt=dataset.read()
@@ -22,16 +23,23 @@ def create_WDC_dataset():
 
     imggt = torch.tensor(imggt, dtype=torch.float)
     # #SST original code
-    # test = imggt[:, 600:800, 50:250].clone()
+    # test = imggt[:, 600:800, 50:250].clone() 200x200
     # train_0 = imggt[:, :600, :].clone()
     # train_1 = imggt[:, 800:, :].clone()
-    # val = imggt[:, 600:656, 251:].clone()
+    # val = imggt[:, 600:656, 251:].clone()56x56
 
-    #HYPSO values
-    test = imggt[:, 600:800, 50:250].clone()
-    train_0 = imggt[:, :600, :307].clone()
-    train_1 = imggt[:, 800:, :307].clone()
-    val = imggt[:, 600:656, 251:307].clone()
+    # #HYPSO values
+    # test = imggt[:, 600:800, 50:250].clone() 200x200
+    # train_0 = imggt[:, :600, :307].clone()
+    # train_1 = imggt[:, 800:, :307].clone()
+    # val = imggt[:, 600:656, 251:307].clone()
+
+    #HYPSO FLAT values (598, 1092) GLORIA
+    train_0 = imggt[:, :, :300].clone() 
+    train_1 = imggt[:, :, 600:900].clone()
+    test = imggt[:, 100:300, 350:550].clone() #200x200
+    val = imggt[:, 300:356, 400:456].clone() #56x56
+
 
     
     ##Modified code
