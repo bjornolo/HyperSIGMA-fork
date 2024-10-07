@@ -6,11 +6,17 @@
 **data/
 **output/
 **original_test/
+**dataset/
 
 # Ignore all files in this directory
 *.pth
 *.pyc
 *.Identifier
+*.tif
+*.tfw
+*.mat
+*.pix
+*.hdr
 
 
 # Ignore all folders in this directory

@@ -64,7 +64,7 @@ def channel_scale(img):
 
 # up sample before feeding into network
 def upsample(img, ratio):
-    [h, w, _] = img.shape
+    [_, h, w] = img.shape
     return cv2.resize(img, (ratio*h, ratio*w), interpolation=cv2.INTER_CUBIC)
 
 

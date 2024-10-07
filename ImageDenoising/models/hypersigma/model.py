@@ -145,10 +145,10 @@ class SSFusionFramework(torch.nn.Module):
         return x
 
 
-def spat_vit_b_rvsa(args=None, in_channels=120):
+def spat_vit_b_rvsa(args=None, in_channels=191): #TODO: REMEMBER CHANNELS BJORNOLAV
     model = SSFusionFramework(
         img_size=64,
-        in_channels=in_channels, #TODO: REMEMBER CHANNELS BJORNOLAV
+        in_channels=in_channels, 
     )
     return model
 

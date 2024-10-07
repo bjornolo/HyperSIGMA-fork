@@ -737,7 +737,7 @@ if __name__ == "__main__":
     image_channels=191 #TODO: REMEMBER CHANNELS BJORNOLAV
     model = SpatViT(
         img_size=64,
-        in_chans=image_channels, #HERE
+        in_chans=image_channels, 
         patch_size=2,
         drop_path_rate=0.1,
         out_indices=[3, 5, 7, 11],
@@ -752,12 +752,13 @@ if __name__ == "__main__":
         use_checkpoint=False,
         use_abs_pos_emb=False,
         interval = 3,
-        original_channels=image_channels #HERE
+        original_channels=image_channels 
     ).cuda()
     
     model.eval()
 
-    input = torch.Tensor(1, 120, 64, 64).cuda() #HERE
+    # input = torch.Tensor(1, 120, 64, 64).cuda() #TODO: CHANNEL TEST
+    input = torch.Tensor(1, image_channels, 64, 64).cuda() 
 
     # path="/mnt/code/users/yuchunmiao/hypersigma-master/data/Hyperspectral_Project/WDC/test_noise/complex/512_inpainting/test.mat"
     # input=torch.from_numpy(np.expand_dims(scio.loadmat(path)['input'].transpose(2,0,1), axis=0))[:,:,0:128,0:128].cuda()

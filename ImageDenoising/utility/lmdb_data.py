@@ -148,6 +148,6 @@ def createHYPSO():
     )
 
 if __name__ == '__main__':
-    # createDCmall()
+    createDCmall()
     # createHYPSO_resized()
-    createHYPSO()
+    # createHYPSO()

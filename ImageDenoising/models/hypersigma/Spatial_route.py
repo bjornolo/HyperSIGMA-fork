@@ -477,7 +477,7 @@ class Adpater(nn.Module):
         # self.conv1_reconstruct = nn.Conv2d(191-71, 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
         self.conv1_reconstruct = nn.Conv2d(original_channels, original_channels, kernel_size=3, padding=1) 
         # self.conv2_reconstruct = nn.Conv2d(191-71, in_chans, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
-        self.conv2_reconstruct = nn.Conv2d(191-71, in_chans, kernel_size=3, padding=1) 
+        self.conv2_reconstruct = nn.Conv2d(original_channels, in_chans, kernel_size=3, padding=1) 
     
         self.conv_head = nn.Conv2d(original_channels, in_chans, kernel_size=3, padding=1)
         # self.conv3_reconstruct = nn.Conv2d(in_chans*2, in_chans, kernel_size=3, padding=1)

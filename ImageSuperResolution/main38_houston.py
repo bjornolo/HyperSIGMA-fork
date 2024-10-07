@@ -17,10 +17,10 @@ import json
 from tqdm import tqdm
 from data import HSTrainingData
 from data import HSTestData
-from network.HSIformer38 import *
+# from network.HSIformer38 import *
 from metrics import compare_mpsnr
 from models.SpatSIGMA import spat_vit_b_rvsa as SpatSIGMA
-from ImageSuperResolution.models.HyperSIGMA.model import spat_vit_b_rvsa as HyperSIGMA
+from models.HyperSIGMA.model import spat_vit_b_rvsa as HyperSIGMA
 # loss
 from loss import HLoss
 # from loss import HyLapLoss
@@ -78,16 +78,13 @@ def main():
     train_parser.add_argument("--seed", type=int, default=3000, help="start seed for model")
     train_parser.add_argument('--la1', type=float, default=0.5, help="")
     train_parser.add_argument('--la2', type=float, default=0.1, help="")
-    train_parser.add_argument("--learning_rate", type=float, default=1e-4,
-                              help="learning rate, default set to 1e-4")
+    train_parser.add_argument("--learning_rate", type=float, default=1e-4, help="learning rate, default set to 1e-4")
     train_parser.add_argument("--weight_decay", type=float, default=0, help="weight decay, default set to 0")
-    train_parser.add_argument("--save_dir", type=str, default="./trained_model/",
-                              help="directory for saving trained models, default is trained_model folder")
+    train_parser.add_argument("--save_dir", type=str, default="./trained_model/",help="directory for saving trained models, default is trained_model folder")
     train_parser.add_argument("--gpus", type=str, default="1", help="gpu ids (default: 7)")
 
     test_parser = subparsers.add_parser("test", help="parser for testing arguments")
-    test_parser.add_argument("--cuda", type=int, required=False,default=1,
-                             help="set it to 1 for running on GPU, 0 for CPU")
+    test_parser.add_argument("--cuda", type=int, required=False,default=1,help="set it to 1 for running on GPU, 0 for CPU")
     test_parser.add_argument("--gpus", type=str, default="0", help="gpu ids (default: 7)")
     test_parser.add_argument("--dataset_name", type=str, default="Chikusei",help="dataset_name, default set to dataset_name")
     test_parser.add_argument("--model_title", type=str, default="vit_series4_final",help="model_title, default set to model_title")
@@ -132,6 +129,10 @@ def train(args):
     test_data_dir = './dataset/' + args.dataset_name + '_x' + str(args.n_scale) + '/' + args.dataset_name + '_test.mat'
     result_path = './results/' + args.dataset_name + '_x' + str(args.n_scale)+'/'
     # test_data_dir = './datasets32/'+args.dataset_name+'_x'+str(args.n_scale)+'/'+args.dataset_name+'_test.mat'
+    print(f"train_path: {train_path}")
+    print(f"test_data_dir: {test_data_dir}")
+    print(f"result_path: {result_path}")
+    print(f"-----------------")
 
     train_set = HSTrainingData(image_dir=train_path, augment=True)
 
@@ -145,6 +146,8 @@ def train(args):
         colors = 102
     elif args.dataset_name=='houston':
         colors = 48
+    elif args.dataset_name=='hypso':
+        colors = 120
     else:
         colors = 128
 
@@ -345,6 +348,8 @@ def test(args):
         colors = 102
     elif args.dataset_name=='houston':
         colors = 48
+    elif args.dataset_name=='hypso':
+        colors = 120
     else:
         colors = 128
 
@@ -355,6 +360,8 @@ def test(args):
     result_path = os.path.dirname(model_name)
     device = torch.device("cuda" if args.cuda else "cpu")
     print('===> Loading testset')
+    print(f"test_data_dir: {test_data_dir}")
+    print(f"model_name: {model_name}")
 
     test_set = HSTestData(test_data_dir)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False)
