@@ -393,7 +393,8 @@ class Adpater(nn.Module):
                  num_heads=12, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop_rate=0., attn_drop_rate=0.,
                  drop_path_rate=0., hybrid_backbone=None, norm_layer=None, init_values=None, use_checkpoint=False, 
                  use_abs_pos_emb=False, use_rel_pos_bias=False, use_shared_rel_pos_bias=False,
-                 out_indices=[11], interval=3, pretrained=None, restart_regression=True, n_points=8, original_channels=191): #TODO: REMEMBER CHANNELS BJORNOLAV
+                 out_indices=[11], interval=3, pretrained=None, restart_regression=True, n_points=8, original_channels=191-71): #TODO: REMEMBER CHANNELS BJORNOLAV
+                #  out_indices=[11], interval=3, pretrained=None, restart_regression=True, n_points=8, original_channels=191):
         super().__init__()
         self.patch_size = patch_size
         norm_layer = norm_layer or partial(nn.LayerNorm, eps=1e-6)
@@ -420,17 +421,14 @@ class Adpater(nn.Module):
 
         if hybrid_backbone is not None:
             self.patch_embed_add = HybridEmbed(
-                # hybrid_backbone, img_size=img_size, in_chans=self.embed_dim, embed_dim=191-71) #TODO: REMEMBER CHANNELS BJORNOLAV
                 hybrid_backbone, img_size=img_size, in_chans=self.embed_dim, embed_dim=original_channels)
         else:
             self.patch_embed_add = PatchEmbed(
-                # img_size=img_size, patch_size=1, in_chans=self.embed_dim, embed_dim=191-71) #TODO: REMEMBER CHANNELS BJORNOLAV
                 img_size=img_size, patch_size=1, in_chans=self.embed_dim, embed_dim=original_channels) 
 
         num_patches_add = self.patch_embed_add.num_patches
 
         if use_abs_pos_emb:
-            # self.pos_embed_add = nn.Parameter(torch.zeros(1, num_patches_add, 191-71)) #TODO: REMEMBER CHANNELS BJORNOLAV
             self.pos_embed_add = nn.Parameter(torch.zeros(1, num_patches_add, original_channels)) 
         else: 
             self.pos_embed_add = None
@@ -447,7 +445,6 @@ class Adpater(nn.Module):
         
         self.blocks_add = nn.ModuleList([
             Block(
-                # dim=191-71, num_heads=num_heads, mlp_ratio=mlp_ratio, qkv_bias=qkv_bias, qk_scale=qk_scale, #TODO: REMEMBER CHANNELS BJORNOLAV
                 dim=original_channels, num_heads=num_heads, mlp_ratio=mlp_ratio, qkv_bias=qkv_bias, qk_scale=qk_scale,
                 init_values=init_values, sample=((i + 1) % interval != 0), 
                 restart_regression=restart_regression, n_points=n_points)
@@ -474,9 +471,7 @@ class Adpater(nn.Module):
         self.up1 = nn.ConvTranspose2d(in_channels=embed_dim, out_channels=embed_dim, kernel_size=2, stride=2)
         self.up2 = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
 
-        # self.conv1_reconstruct = nn.Conv2d(191-71, 191-71, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
         self.conv1_reconstruct = nn.Conv2d(original_channels, original_channels, kernel_size=3, padding=1) 
-        # self.conv2_reconstruct = nn.Conv2d(191-71, in_chans, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
         self.conv2_reconstruct = nn.Conv2d(original_channels, in_chans, kernel_size=3, padding=1) 
     
         self.conv_head = nn.Conv2d(original_channels, in_chans, kernel_size=3, padding=1)

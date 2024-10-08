@@ -416,7 +416,7 @@ class Adapter_Spectral(nn.Module):
         self.pretrained = pretrained
 
         #self.freeze_attn()
-        self.conv_head = nn.Conv2d(191, in_chans, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV
+        self.conv_head = nn.Conv2d(in_chans, in_chans, kernel_size=3, padding=1) #TODO: REMEMBER CHANNELS BJORNOLAV #TODO: TEST IF ORIGINA CHANNLES WORKS
         # self.conv_head = nn.Conv2d(191-71, in_chans, kernel_size=3, padding=1)
         self.conv1_reconstruct = nn.Conv2d(in_chans, in_chans, kernel_size=3, padding=1)
 

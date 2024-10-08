@@ -369,8 +369,8 @@ class SpatViT(nn.Module):
                  num_heads=12, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop_rate=0., attn_drop_rate=0.,
                  drop_path_rate=0., hybrid_backbone=None, norm_layer=None, init_values=None, use_checkpoint=False, 
                  use_abs_pos_emb=False, use_rel_pos_bias=False, use_shared_rel_pos_bias=False,
-                #  out_indices=[11], interval=3, pretrained=None, restart_regression=True, n_points=8, original_channels=191-71 #TODO: REMEMBER CHANNELS BJORNOLAV
-                 out_indices=[11], interval=3, pretrained=None, restart_regression=True, n_points=8, original_channels=191
+                 out_indices=[11], interval=3, pretrained=None, restart_regression=True, n_points=8, original_channels=191-71 #TODO: REMEMBER CHANNELS BJORNOLAV
+                #  out_indices=[11], interval=3, pretrained=None, restart_regression=True, n_points=8, original_channels=191
                  ): 
         super().__init__()
         self.patch_size = patch_size
@@ -633,8 +633,8 @@ class SpatViT(nn.Module):
         return x
 
     
-# def spat_vit_b_rvsa(inchannels=100, original_channels=191-71, img_size=64, args=None):#TODO: REMEMBER CHANNELS BJORNOLAV
-def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
+def spat_vit_b_rvsa(inchannels=100, original_channels=191-71, img_size=64, args=None):#TODO: REMEMBER CHANNELS BJORNOLAV
+# def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
 
     model = SpatViT(
             img_size=img_size,
@@ -672,7 +672,8 @@ def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=Non
 
 
 #TODO: REMEMBER CHANNELS BJORNOLAV
-def spat_vit_l_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
+def spat_vit_l_rvsa(inchannels=100, original_channels=191-71, img_size=64, args=None):
+# def spat_vit_l_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
 
     model = SpatViT(
             img_size=img_size,
@@ -734,7 +735,7 @@ def spat_vit_h_rvsa(args, inchannels=3):
     
     
 if __name__ == "__main__":
-    image_channels=191 #TODO: REMEMBER CHANNELS BJORNOLAV
+    image_channels=191-71 #TODO: REMEMBER CHANNELS BJORNOLAV
     model = SpatViT(
         img_size=64,
         in_chans=image_channels, 
@@ -757,7 +758,6 @@ if __name__ == "__main__":
     
     model.eval()
 
-    # input = torch.Tensor(1, 120, 64, 64).cuda() #TODO: CHANNEL TEST
     input = torch.Tensor(1, image_channels, 64, 64).cuda() 
 
     # path="/mnt/code/users/yuchunmiao/hypersigma-master/data/Hyperspectral_Project/WDC/test_noise/complex/512_inpainting/test.mat"

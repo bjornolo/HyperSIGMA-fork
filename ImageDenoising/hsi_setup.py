@@ -432,7 +432,7 @@ class Engine(object):
         all_input = self.concate(inputs_blocks)
         all_gt = self.concate(gt_blocks)
         ##TODO: SAVE DIR FOR RESULTS
-        save_dir = f"/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/WDC/results/{self.opt.arch}/"
+        save_dir = f"/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/GLORIA/results/{self.opt.arch}/"
         print(save_dir)
         save_target = os.path.join(save_dir, f"{self.opt.arch}_{os.path.basename(self.opt.testdir)}.mat")
         
@@ -441,8 +441,8 @@ class Engine(object):
         scio.savemat(save_target, {'gt': all_gt.transpose(1,2,0), 'input': all_input.transpose(1,2,0), 'output': all_output.transpose(1,2,0)})
         
     def concate(self, blocks):
-        # original_shape=(191-71 ,192,192) #TODO: REMEMBER CHANNELS BJORNOLAV
-        original_shape=(191,192,192)
+        original_shape=(120 ,192,192) #TODO: REMEMBER CHANNELS BJORNOLAV
+        # original_shape=(191,192,192)
         new_tensor = np.zeros(original_shape)
         block_shape = blocks[0].shape
         print('---------\n')
