@@ -727,18 +727,15 @@ def addNoiseCases(srcdir,dstdir):
         if not os.path.exists(dstdir_noise):
             mkdir(dstdir_noise)
         for filename in os.listdir(srcdir):
+            print(f"Processing {noise_name}, iteration {c+1}")
             c  = c + 1
-            print(c)
             filepath = os.path.join(srcdir, filename)
             mat = loadmat(filepath)   
-            # srchsi = mat['data'].transpose(2,0,1)
             srchsi = mat['data']
             
             noisyhsi = noise_model(srchsi)
-            print(dstdir_noise,filepath)
-            # savemat(os.path.join(dstdir_noise, filename), {'gt': srchsi.transpose(
-            #    1, 2, 0), 'input': noisyhsi.transpose(1, 2, 0)})
-            # savemat(os.path.join(dstdir_noise, filename), {'gt': loadmat(os.path.join(srcdir, filename))['data'][:,0:192, 0:192], 'input': noisyhsi[:,0:192, 0:192]})
+            print(f"Input image shape: {srchsi.shape}, Noisy image shape: {noisyhsi.shape}")
+            
             savemat(os.path.join(dstdir_noise, filename), {'gt': srchsi, 'input': noisyhsi})
 
 if __name__ == '__main__':

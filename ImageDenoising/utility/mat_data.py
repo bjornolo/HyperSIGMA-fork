@@ -86,7 +86,49 @@ def create_WDC_dataset():
     savemat(data_path+"test/test.mat", {'data': test})
     savemat(data_path+"val/val.mat", {'data': val})
 
+def create_Hypso_dataset():
+    imgpath = data_path+image_name
+    # imggt = io.imread(imgpath)
+    with rasterio.open(imgpath) as dataset:
+        imggt=dataset.read()
+        print(f"The shape of imggt is: {imggt.shape}")
+
+    imggt = torch.tensor(imggt, dtype=torch.float)
+ 
+    train_0 = imggt[:, :, :200].clone() 
+    train_1 = imggt[:, :, 600:800].clone()
+    test = imggt[:, 100:300, 350:550].clone() #200x200
+    val = imggt[:, 300:356, 400:456].clone() #56x56
+
+    # Simple normalization function
+    def normalize(data):
+        return data / 36855.0  # Normalize to [0, 1] range
+
+    # Normalize train data
+    train_0 = normalize(train_0).numpy()
+    train_1 = normalize(train_1).numpy()
+
+    # Normalize test data
+    test = normalize(test).numpy()
+
+    # Normalize validation data
+    val = normalize(val).numpy()
+    print(f"The shape of train_0 is: {train_0.shape}")
+    print(f"The shape of train_1 is: {train_1.shape}")
+    print(f"The shape of test is: {test.shape}")
+    print(f"The shape of val is: {val.shape}")
+    # Create directories if they don't exist
+    os.makedirs(data_path+"train", exist_ok=True)
+    os.makedirs(data_path+"test", exist_ok=True)
+    os.makedirs(data_path+"val", exist_ok=True)
+
+    savemat(data_path+"train/train_0.mat", {'data': train_0})
+    savemat(data_path+"train/train_1.mat", {'data': train_1})
+    savemat(data_path+"test/test.mat", {'data': test})
+    savemat(data_path+"val/val.mat", {'data': val})
+
 
 if __name__ == '__main__':
-    create_WDC_dataset()
+    # create_WDC_dataset()
+    create_Hypso_dataset()
 

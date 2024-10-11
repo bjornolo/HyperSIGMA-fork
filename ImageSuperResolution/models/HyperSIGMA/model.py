@@ -141,9 +141,9 @@ class SSFusionFramework(torch.nn.Module):
         )
         # decoder
 
-        self.spat_encoder.init_weights('/mnt/code/users/yuchunmiao/SST-master/pre_train/spat-vit-base-ultra-checkpoint-1599.pth')
+        self.spat_encoder.init_weights('/home/lofty/CODE/HyperSIGMA-fork/spat-base.pth')
 
-        self.spec_encoder.init_weights('/mnt/code/users/yuchunmiao/SST-master/pre_train/spec-vit-base-ultra-checkpoint-1599.pth')
+        self.spec_encoder.init_weights('/home/lofty/CODE/HyperSIGMA-fork/spec-base.pth')
 
         # print('################# Initing pretrained weights for Finetuning! ###################')
 

@@ -615,6 +615,11 @@ class SpatialVisionTransformer(nn.Module):
         deform_inputs = deform_inputs_func(x, self.patch_size)
 
         B, C, H, W = x.shape
+    
+        # Add a conversion layer to handle the channel mismatch
+        if C != self.in_chans:
+            x = self.conv_head(x)
+        
         x, (Hp, Wp) = self.patch_embed(x)
         batch_size, seq_len, _ = x.size()
 

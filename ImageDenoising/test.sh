@@ -1,7 +1,10 @@
-modelname=$1 # spatsigma hypersigma
-weight_path=$2
+testdir=$1
 
-# python hsi_denoising_test.py -a $modelname -p hypersigma_gaussian -r -rp $weight_path --testdir  /mnt/code/users/yuchunmiao/SST-master/data/Hyperspectral_Project/WDC/test_noise/Patch_Cases/Case5  --basedir original_test --pretrain_path ./pre_train/spat-vit-base-ultra-checkpoint-1599.pth
-# python hsi_denoising_test.py -a $modelname -p hypersigma_gaussian -r -rp $weight_path --testdir  ./data/HSI_Data/Hyperspectral_Project/WDC/test_noise/Patch_Cases/Case5  --basedir ./data/HSI_Data/Hyperspectral_Project/WDC/results --pretrain_path /home/lofty/CODE/HyperSIGMA-fork/spat-base.pth
-# python hsi_denoising_test.py -a $modelname -p hypersigma_gaussian -r -rp $weight_path --testdir  ./data/HSI_Data/Hyperspectral_Project/HYPSO2/train_noise/Patch_Cases/Case5  --basedir ./data/HSI_Data/Hyperspectral_Project/HYPSO2/results2 --pretrain_path /home/lofty/CODE/HyperSIGMA-fork/spat-base.pth
-python hsi_denoising_test.py -a $modelname -p hypersigma_gaussian -r -rp $weight_path --testdir  ./data/HSI_Data/Hyperspectral_Project/GLORIA/test_noise/Patch_Cases/Case1  --basedir ./data/HSI_Data/Hyperspectral_Project/GLORIA/results --pretrain_path /home/lofty/CODE/HyperSIGMA-fork/spat-base.pth
+python hsi_denoising_test.py \
+-a hypersigma \
+-p hypersigma_gaussian \
+-r \
+-rp ./output/original_hypersigma_1e-4_spat-base_batch4_warmup_l2_epoch_1_complex_s3_8point_HYPSO2/hypersigma_gaussian/model_latest.pth \
+--testdir  $testdir  \
+--basedir ./data/HSI_Data/Hyperspectral_Project/GLORIA/results  \
+--pretrain_path /home/lofty/CODE/HyperSIGMA-fork/spat-base.pth

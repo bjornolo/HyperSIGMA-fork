@@ -505,6 +505,7 @@ class SpatViT(nn.Module):
         self.skip_conv = default_conv(original_channels, in_chans, 3)
 
 
+
     def fix_init_weight(self):
         def rescale(param, layer_id):
             param.div_(math.sqrt(2.0 * layer_id))
@@ -662,7 +663,7 @@ class SpatViT(nn.Module):
         return img + features
 
     def forward(self, x, lms):
-    
+        # print(f"SpatViT forward input shape: x={x.shape}, lms={lms.shape}")
         x = self.forward_features(x)
         x0 = x[0]
         x1 = x[-1] # torch.Size([8, 768, 64, 64])
@@ -715,7 +716,7 @@ def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=Non
             del checkpoint_model[k]
     # interpolate_pos_embed(model, checkpoint_model)
     msg = model.load_state_dict(checkpoint_model, strict=False)
-    print(msg)
+    # print(msg)
 
     return model
 

@@ -13,19 +13,16 @@ def is_mat_file(filename):
 class HSTrainingData(data.Dataset):
     def __init__(self, image_dir, augment=None, use_3D=False):
         self.image_files = [os.path.join(image_dir, x) for x in os.listdir(image_dir) if is_mat_file(x)]
-        # self.image_files = []
-        # for i in self.image_folders:
-        #     images = os.listdir(i)
-        #     for j in images:
-        #         if is_mat_file(j):
-        #             full_path = os.path.join(i, j)
-        #             self.image_files.append(full_path)
         self.augment = augment
         self.use_3Dconv = use_3D
         if self.augment:
             self.factor = 8
         else:
             self.factor = 1
+        print(f"\n------HSTrainingData------")
+        print(f"HSTrainingData image_files: {self.image_files[0]}")
+        print(f"HSTrainingData factor: {self.factor}")
+        print(f"HSTrainingData use_3Dconv: {self.use_3Dconv}\n")
 
     def __getitem__(self, index):
         file_index = index
@@ -38,8 +35,7 @@ class HSTrainingData(data.Dataset):
         ms = np.array(data['ms'][...], dtype=np.float32)
         lms = np.array(data['ms_bicubic'][...], dtype=np.float32)
         gt = np.array(data['gt'][...], dtype=np.float32)
-        ms, lms, gt = utils.data_augmentation(ms, mode=aug_num), utils.data_augmentation(lms, mode=aug_num), \
-                        utils.data_augmentation(gt, mode=aug_num)
+        ms, lms, gt = utils.data_augmentation(ms, mode=aug_num), utils.data_augmentation(lms, mode=aug_num), utils.data_augmentation(gt, mode=aug_num)
         if self.use_3Dconv:
             ms, lms, gt = ms[np.newaxis, :, :, :], lms[np.newaxis, :, :, :], gt[np.newaxis, :, :, :]
             ms = torch.from_numpy(ms.copy()).permute(0, 3, 1, 2)

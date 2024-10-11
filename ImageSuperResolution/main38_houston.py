@@ -34,6 +34,10 @@ from torch.utils.data import dataloader
 from torch.multiprocessing import reductions
 from multiprocessing.reduction import ForkingPickler
 
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning)
+
 default_collate_func = dataloader.default_collate
 
 
@@ -50,8 +54,6 @@ for t in torch._storage_classes:
   else:
     if t in ForkingPickler._extra_reducers:
         del ForkingPickler._extra_reducers[t]
-
-
 
 # global settings
 resume = False
@@ -74,7 +76,8 @@ def main():
     train_parser.add_argument("--use_share", type=bool, default=True, help="f_share, default set to 1")
     train_parser.add_argument("--dataset_name", type=str, default="pavia", help="dataset_name, default set to dataset_name")
     train_parser.add_argument("--model_title", type=str, default="HSIformer36_0.5_0.1", help="model_title, default set to model_title")
-    train_parser.add_argument("--pretrain_path", type=str, default="/mnt/code/users/yuchunmiao/SST-master/pre_train/spat-vit-base-ultra-checkpoint-1599.pth", help="pretrain_path")
+    # train_parser.add_argument("--pretrain_path", type=str, default="/mnt/code/users/yuchunmiao/SST-master/pre_train/spat-vit-base-ultra-checkpoint-1599.pth", help="pretrain_path") #TODO: PATH
+    train_parser.add_argument("--pretrain_path", type=str, default="/home/lofty/CODE/HyperSIGMA-fork/spat-base.pth", help="pretrain_path")
     train_parser.add_argument("--seed", type=int, default=3000, help="start seed for model")
     train_parser.add_argument('--la1', type=float, default=0.5, help="")
     train_parser.add_argument('--la2', type=float, default=0.1, help="")
@@ -110,7 +113,6 @@ def main():
         test(args)
     pass
 
-
 def train(args):
     traintime = str(time.ctime())
     device = torch.device("cuda" if args.cuda else "cpu")
@@ -124,11 +126,8 @@ def train(args):
 
     print('===> Loading datasets')
     train_path    = './dataset/'+args.dataset_name+'_x'+str(args.n_scale)+'/trains/'
-    # train_path = './datasets32/' + args.dataset_name + '_x' + str(args.n_scale) + '/16_128/trains/'
-    # test_data_dir = './datasets32/' + args.dataset_name + '_x' + str(args.n_scale) + '/16_128/' + args.dataset_name + '_test.mat'
     test_data_dir = './dataset/' + args.dataset_name + '_x' + str(args.n_scale) + '/' + args.dataset_name + '_test.mat'
     result_path = './results/' + args.dataset_name + '_x' + str(args.n_scale)+'/'
-    # test_data_dir = './datasets32/'+args.dataset_name+'_x'+str(args.n_scale)+'/'+args.dataset_name+'_test.mat'
     print(f"train_path: {train_path}")
     print(f"test_data_dir: {test_data_dir}")
     print(f"result_path: {result_path}")
@@ -204,6 +203,11 @@ def train(args):
             x, lms, gt = x.to(device), lms.to(device), gt.to(device)
             psnr = []
             optimizer.zero_grad()
+            # print(f"\nTraining iteration {iteration + 1}\n")
+            # print(f"Input shapes: x={x.shape}, lms={lms.shape}, gt={gt.shape}")
+            # print(f"Data types: x={x.dtype}, lms={lms.dtype}, gt={gt.dtype}")
+            # print(f"Value ranges: x=({x.min():.2f}, {x.max():.2f}), lms=({lms.min():.2f}, {lms.max():.2f}), gt=({gt.min():.2f}, {gt.max():.2f})")
+
             y = net(x, lms)
             loss = h_loss(y, gt)
             epoch_meter.add(loss.item())
@@ -294,13 +298,11 @@ def train(args):
     #     file.write(pickle.dumps(indices))
     # file.close()
 
-
 def sum_dict(a, b):
     temp = dict()
     for key in a.keys()| b.keys():
         temp[key] = sum([d.get(key, 0) for d in (a, b)])
     return temp
-
 
 def adjust_learning_rate(start_lr, optimizer, epoch):
     """Sets the learning rate to the initial LR decayed by 10 every 50 epochs"""
@@ -320,7 +322,6 @@ def adjust_learning_rate(start_lr, optimizer, epoch):
     for param_group in optimizer.param_groups:
         param_group['lr'] = lr
 
-
 def validate(args, loader, model, criterion):
     device = torch.device("cuda" if args.cuda else "cpu")
     # switch to evaluate mode
@@ -339,7 +340,6 @@ def validate(args, loader, model, criterion):
     # back to training mode
     model.train()
     return epoch_meter.value()[0]
-
 
 def test(args):
     if args.dataset_name=='cave':
@@ -376,6 +376,7 @@ def test(args):
         if "SpatSIGMA" == args.model_title:
             net = SpatSIGMA(original_channels=colors, args=args)
         elif "HyperSIGMA" == args.model_title:
+            print(f"Initializing HyperSIGMA model with {colors} channels")
             net = HyperSIGMA(original_channels=colors, args=args)
 
 
