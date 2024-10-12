@@ -76,7 +76,6 @@ def main():
     train_parser.add_argument("--use_share", type=bool, default=True, help="f_share, default set to 1")
     train_parser.add_argument("--dataset_name", type=str, default="pavia", help="dataset_name, default set to dataset_name")
     train_parser.add_argument("--model_title", type=str, default="HSIformer36_0.5_0.1", help="model_title, default set to model_title")
-    # train_parser.add_argument("--pretrain_path", type=str, default="/mnt/code/users/yuchunmiao/SST-master/pre_train/spat-vit-base-ultra-checkpoint-1599.pth", help="pretrain_path") #TODO: PATH
     train_parser.add_argument("--pretrain_path", type=str, default="/home/lofty/CODE/HyperSIGMA-fork/spat-base.pth", help="pretrain_path")
     train_parser.add_argument("--seed", type=int, default=3000, help="start seed for model")
     train_parser.add_argument('--la1', type=float, default=0.5, help="")
@@ -94,7 +93,7 @@ def main():
     test_parser.add_argument("--n_feats", type=int, default=180, help="n_feats, default set to 256")
     test_parser.add_argument("--n_scale", type=int, default=4, help="n_scale, default set to 2")
     test_parser.add_argument("--weight_path", type=str, default="Chikusei",help="dataset_name, default set to dataset_name")
-    test_parser.add_argument("--pretrain_path", type=str, default="/mnt/code/users/yuchunmiao/SST-master/pre_train/checkpoint-1599.pth", help="pretrain_path")
+    test_parser.add_argument("--pretrain_path", type=str, default="/home/lofty/CODE/HyperSIGMA-fork/spat-base.pth", help="pretrain_path")
     # test_parser.add_argument("--test_dir", type=str, required=True, help="directory of testset")
     # test_parser.add_argument("--model_dir", type=str, required=True, help="directory of trained model")
 

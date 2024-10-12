@@ -7,6 +7,8 @@
 **output/
 **original_test/
 **dataset/
+**checkpoints/
+**runs/
 
 # Ignore all files in this directory
 *.pth
