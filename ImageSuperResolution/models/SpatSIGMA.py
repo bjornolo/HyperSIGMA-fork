@@ -11,8 +11,6 @@ from timm.models.layers import drop_path, to_2tuple, trunc_normal_
 
 from torch.nn.init import constant_, xavier_uniform_
 
-
-
 def default_conv(in_channels, out_channels, kernel_size, stride=1, bias=True, dilation=1, groups=1):
     if dilation==1:
        return nn.Conv2d(
@@ -96,7 +94,6 @@ def get_reference_points(spatial_shapes, device):
     #reference_points = reference_points[:, :, None] #(1，H_*W_，1，2)
     return ref
 
-
 def deform_inputs_func(x, patch_size):
     B, c, h, w = x.shape
     b = B // 3
@@ -112,7 +109,6 @@ def deform_inputs_func(x, patch_size):
     
     return deform_inputs
 
-
 class DropPath(nn.Module):
     """Drop paths (Stochastic Depth) per sample  (when applied in main path of residual blocks).
     """
@@ -125,7 +121,6 @@ class DropPath(nn.Module):
     
     def extra_repr(self):
         return 'p={}'.format(self.drop_prob)
-
 
 class Mlp(nn.Module):
     def __init__(self, in_features, hidden_features=None, out_features=None, act_layer=nn.GELU, drop=0.):
@@ -242,7 +237,6 @@ class SampleAttention(nn.Module):
         xavier_uniform_(self.output_proj.weight.data)
         constant_(self.output_proj.bias.data, 0.)
 
-
 class Attention(nn.Module):
     def __init__(
             self, dim, num_heads=8, qkv_bias=False, qk_scale=None, attn_drop=0.,
@@ -281,7 +275,6 @@ class Attention(nn.Module):
         x = self.proj(x)
         x = self.proj_drop(x)
         return x
-
 
 class Block(nn.Module):
     def __init__(self, dim, num_heads, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop=0., attn_drop=0.,
@@ -592,7 +585,7 @@ class SpatViT(nn.Module):
                     state_dict['pos_embed'] = pos_embed_checkpoint[:, num_extra_tokens:]
 
             msg = self.load_state_dict(state_dict, False)
-            print(msg)
+            # print(msg)
 
         elif pretrained is None:
             self.apply(_init_weights)
@@ -682,7 +675,6 @@ class SpatViT(nn.Module):
 
         x = self.conv_tail(x)
         return x
-
     
 def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
 
@@ -720,8 +712,6 @@ def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=Non
 
     return model
 
-
-
 def spat_vit_l_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
 
     model = SpatViT(
@@ -754,7 +744,7 @@ def spat_vit_l_rvsa(inchannels=100, original_channels=191, img_size=64, args=Non
                 del checkpoint_model[k]
         interpolate_pos_embed(model, checkpoint_model)
         msg = model.load_state_dict(checkpoint_model, strict=False)
-        print(msg)
+        # print(msg)
 
     return model
 
@@ -781,7 +771,6 @@ def spat_vit_h_rvsa(args, inchannels=3):
 
 
     return backbone
-    
     
 if __name__ == "__main__":
 

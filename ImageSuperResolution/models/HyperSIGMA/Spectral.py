@@ -539,7 +539,7 @@ class SpectralVisionTransformer(nn.Module):
                     state_dict['pos_embed'] = pos_embed_checkpoint[:, num_extra_tokens:]
 
             msg = self.load_state_dict(state_dict, False)
-            print(msg)
+            # print(msg)
 
         elif pretrained is None:
             self.apply(_init_weights)
@@ -573,15 +573,13 @@ class SpectralVisionTransformer(nn.Module):
         x = self.patch_embed(x) # B, N, C
 
         B, N, C = x.shape
-
         x = self.spec_embed(x) # B, Hp*Wp, N1
 
         _, _, num_tokens = x.shape
 
         x = x.transpose(1,2) # B, N1, Hp*Wp
-        
         x_in = x.reshape(B, num_tokens, H, W)
-        
+
         x = self.spat_map(x) # B, N1, C1
 
         batch_size, _, embed_dim = x.size()

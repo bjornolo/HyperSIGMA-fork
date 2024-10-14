@@ -10,7 +10,7 @@ python main38_houston.py train \
 --la1 0.3 \
 --la2 0.1 \
 --dataset_name $dataset_name \
---epochs 350 \
+--epochs 10 \
 --gpus 0 \
 --batch_size $batch_size \
 --learning_rate 6e-5 \

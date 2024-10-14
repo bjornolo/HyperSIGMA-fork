@@ -166,6 +166,7 @@ class SSFusionFramework(torch.nn.Module):
 
     def forward(self, x, lms):
 
+
         b, _, h, w = x.shape
 
         x0, img_feature = self.spat_encoder(x)

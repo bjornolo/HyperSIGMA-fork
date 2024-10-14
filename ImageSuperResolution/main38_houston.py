@@ -153,6 +153,10 @@ def train(args):
     if "SpatSIGMA" == args.model_title:
         net = SpatSIGMA(original_channels=colors, args=args)
     elif "HyperSIGMA" == args.model_title:
+        print(f"Building HyperSIGMA model with original_channels: {colors}")
+        print("Building HyperSIGMA model with args:")
+        for arg, value in vars(args).items():
+            print(f"{arg}: {value}")
         net = HyperSIGMA(original_channels=colors, args=args)
 
 
@@ -388,15 +392,14 @@ def test(args):
         block_size = 32
         output = []
         for i, (ms, lms, gt) in enumerate(test_loader):
+            print(f" iteration {i} of {len(test_loader)}")
             # compute output
             ms, lms, gt = ms.to(device), lms.to(device), gt.\
                 to(device)
-            print(ms.shape)
             y = torch.zeros_like(gt) - 10000000000000000
             num_blocks = ms.shape[-1]  // block_size
             for ii in range(num_blocks):
                 for j in range(num_blocks):
-                    print("123")
                     start_idx_i = ii * block_size
                     end_idx_i = start_idx_i + block_size
                     

@@ -22,7 +22,13 @@ class HSTrainingData(data.Dataset):
         print(f"\n------HSTrainingData------")
         print(f"HSTrainingData image_files: {self.image_files[0]}")
         print(f"HSTrainingData factor: {self.factor}")
-        print(f"HSTrainingData use_3Dconv: {self.use_3Dconv}\n")
+        print(f"HSTrainingData use_3Dconv: {self.use_3Dconv}")
+        
+        # Print shape of one of the files
+        sample_data = sio.loadmat(self.image_files[0])
+        print(f"Shape of 'ms' in first file: {sample_data['ms'].shape}")
+        print(f"Shape of 'ms_bicubic' in first file: {sample_data['ms_bicubic'].shape}")
+        print(f"Shape of 'gt' in first file: {sample_data['gt'].shape}")
 
     def __getitem__(self, index):
         file_index = index

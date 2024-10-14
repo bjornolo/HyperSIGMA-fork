@@ -594,7 +594,7 @@ class SpatialVisionTransformer(nn.Module):
                     state_dict['pos_embed'] = pos_embed_checkpoint[:, num_extra_tokens:]
 
             msg = self.load_state_dict(state_dict, False)
-            print(msg)
+            # print(msg)
 
         elif pretrained is None:
             self.apply(_init_weights)
@@ -615,11 +615,6 @@ class SpatialVisionTransformer(nn.Module):
         deform_inputs = deform_inputs_func(x, self.patch_size)
 
         B, C, H, W = x.shape
-    
-        # Add a conversion layer to handle the channel mismatch
-        if C != self.in_chans:
-            x = self.conv_head(x)
-        
         x, (Hp, Wp) = self.patch_embed(x)
         batch_size, seq_len, _ = x.size()
 
@@ -738,46 +733,9 @@ def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=Non
                 del checkpoint_model[k]
         interpolate_pos_embed(model, checkpoint_model)
         msg = model.load_state_dict(checkpoint_model, strict=False)
-        print(msg)
+        # print(msg)
 
     return model
-
-
-# def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
-
-#     model = SpatViT(
-#             img_size=img_size,
-#             in_chans=inchannels,
-#             patch_size=8,
-#             drop_path_rate=0.1,
-#             out_indices=[3, 5, 7, 11],
-#             embed_dim=768,
-#             depth=12,
-#             num_heads=12,
-#             mlp_ratio=4,
-#             qkv_bias=True,
-#             qk_scale=None,
-#             drop_rate=0.,
-#             attn_drop_rate=0.,
-#             use_checkpoint=False,
-#             use_abs_pos_emb=True,
-#             interval = 3,
-#             original_channels=original_channels
-#     )
-#     if not args.from_scratch:
-#         checkpoint = torch.load(args.pretrain_path, map_location='cpu')
-#         print("Load pre-trained checkpoint from: %s" % args.pretrain_path)
-#         checkpoint_model = checkpoint['model']
-#         state_dict = model.state_dict()
-#         for k in ['head.weight', 'head.bias']:
-#             if k in checkpoint_model and checkpoint_model[k].shape != state_dict[k].shape:
-#                 print(f"Removing key {k} from pretrained checkpoint")
-#                 del checkpoint_model[k]
-#         interpolate_pos_embed(model, checkpoint_model)
-#         msg = model.load_state_dict(checkpoint_model, strict=False)
-#         print(msg)
-
-#     return model
 
 def spat_vit_l_rvsa(inchannels=100, original_channels=191, img_size=64, args=None):
 
@@ -811,7 +769,7 @@ def spat_vit_l_rvsa(inchannels=100, original_channels=191, img_size=64, args=Non
                 del checkpoint_model[k]
         interpolate_pos_embed(model, checkpoint_model)
         msg = model.load_state_dict(checkpoint_model, strict=False)
-        print(msg)
+        # print(msg)
 
     return model
 

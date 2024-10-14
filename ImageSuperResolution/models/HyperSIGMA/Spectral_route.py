@@ -532,7 +532,7 @@ class Adapter_Spectral(nn.Module):
                     state_dict['pos_embed'] = pos_embed_checkpoint[:, num_extra_tokens:]
 
             msg = self.load_state_dict(state_dict, False)
-            print(msg)
+            # print(msg)
 
         elif pretrained is None:
             self.apply(_init_weights)

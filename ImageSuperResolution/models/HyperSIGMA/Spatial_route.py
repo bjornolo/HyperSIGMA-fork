@@ -581,7 +581,7 @@ class Adpater(nn.Module):
                     state_dict['pos_embed'] = pos_embed_checkpoint[:, num_extra_tokens:]
 
             msg = self.load_state_dict(state_dict, False)
-            print(msg)
+            # print(msg)
 
         elif pretrained is None:
             self.apply(_init_weights)
@@ -674,7 +674,7 @@ def spat_vit_b_rvsa(inchannels=100, original_channels=191, img_size=64, args=Non
                 del checkpoint_model[k]
         interpolate_pos_embed(model, checkpoint_model)
         msg = model.load_state_dict(checkpoint_model, strict=False)
-        print(msg)
+        # print(msg)
 
     return model
 
@@ -711,7 +711,7 @@ def spat_vit_l_rvsa(inchannels=100, original_channels=191, img_size=64, args=Non
                 del checkpoint_model[k]
         interpolate_pos_embed(model, checkpoint_model)
         msg = model.load_state_dict(checkpoint_model, strict=False)
-        print(msg)
+        # print(msg)
 
     return model
 
