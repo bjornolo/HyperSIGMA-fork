@@ -27,6 +27,7 @@ from loss import HLoss
 from metrics import quality_assessment
 import os
 import glob
+import scipy.io as sio
 
 import sys
 import torch
@@ -88,11 +89,11 @@ def main():
     test_parser = subparsers.add_parser("test", help="parser for testing arguments")
     test_parser.add_argument("--cuda", type=int, required=False,default=1,help="set it to 1 for running on GPU, 0 for CPU")
     test_parser.add_argument("--gpus", type=str, default="0", help="gpu ids (default: 7)")
-    test_parser.add_argument("--dataset_name", type=str, default="Chikusei",help="dataset_name, default set to dataset_name")
+    test_parser.add_argument("--dataset_name", type=str, default="hypso",help="dataset_name, default set to dataset_name")
     test_parser.add_argument("--model_title", type=str, default="vit_series4_final",help="model_title, default set to model_title")
     test_parser.add_argument("--n_feats", type=int, default=180, help="n_feats, default set to 256")
     test_parser.add_argument("--n_scale", type=int, default=4, help="n_scale, default set to 2")
-    test_parser.add_argument("--weight_path", type=str, default="Chikusei",help="dataset_name, default set to dataset_name")
+    test_parser.add_argument("--weight_path", type=str, default="hypso",help="dataset_name, default set to dataset_name")
     test_parser.add_argument("--pretrain_path", type=str, default="/home/lofty/CODE/HyperSIGMA-fork/spat-base.pth", help="pretrain_path")
     # test_parser.add_argument("--test_dir", type=str, required=True, help="directory of testset")
     # test_parser.add_argument("--model_dir", type=str, required=True, help="directory of trained model")
@@ -354,22 +355,26 @@ def test(args):
     elif args.dataset_name=='hypso':
         colors = 120
     else:
-        colors = 128
+        colors = 120
 
 
-    test_data_dir = './dataset/' + args.dataset_name + '_x' + str(args.n_scale) + '/' + args.dataset_name + '_test.mat'
+    # test_data_dir = './dataset/' + args.dataset_name + '_x' + str(args.n_scale) + '/' + args.dataset_name + '_test.mat'
+    test_data_dir = './dataset/' + args.dataset_name + '_x' + str(args.n_scale) + '/test'
     model_title = args.model_title
     model_name = args.weight_path
-    result_path = os.path.dirname(model_name)
+    # result_path = os.path.dirname(model_name)
+    result_path = './dataset/' + args.dataset_name + '_x' + str(args.n_scale) + '/result'
+    os.makedirs(result_path, exist_ok=True)
     device = torch.device("cuda" if args.cuda else "cpu")
     print('===> Loading testset')
     print(f"test_data_dir: {test_data_dir}")
+    print(f"model_title: {model_title}")
     print(f"model_name: {model_name}")
+    print(f"result_path: {result_path}")
 
     test_set = HSTestData(test_data_dir)
     test_loader = DataLoader(test_set, batch_size=1, shuffle=False)
     print('===> Start testing')
-
     with torch.no_grad():
         test_number = 0
         epoch_meter = meter.AverageValueMeter()
@@ -423,9 +428,19 @@ def test(args):
             indices[index] = indices[index] / test_number
 
         #save_dir = "./test.npy"
-        save_dir = os.path.join(result_path, model_title + '_{}.npy'.format(indices['MPSNR']))
-        np.save(save_dir, output)
-        print("Test finished, test results saved to .npy file at ", save_dir)
+        # Get the file names from test_set.image_files
+        file_names = [os.path.splitext(os.path.basename(file))[0] for file in test_set.image_files]
+        
+        for idx, y in enumerate(output):
+            # Create the save directory with the same name as the processed file
+            save_dir = os.path.join(result_path, f"{file_names[idx]}.mat")
+            
+            # Save the output as a .mat file
+            sio.savemat(save_dir, {'output': y})
+            
+            print(f"Test result for {file_names[idx]} saved to .mat file at {save_dir}")
+        
+        print("All test results saved.")
         print(indices)
 
 def save_checkpoint(args, model, epoch, traintime):
