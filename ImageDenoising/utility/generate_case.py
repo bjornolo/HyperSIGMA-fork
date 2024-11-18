@@ -739,7 +739,7 @@ def addNoiseCases(srcdir,dstdir):
             savemat(os.path.join(dstdir_noise, filename), {'gt': srchsi, 'input': noisyhsi})
 
 if __name__ == '__main__':
-    srcdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/GLORIA/test'   #file path of original file
+    srcdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/GRIZZLY/test'   #file path of original file
     dstdir = '/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/GLORIA/test_noise/Cases' #file path to put the testing file
     addNoiseCases(srcdir,dstdir)
 
