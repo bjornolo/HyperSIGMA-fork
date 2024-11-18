@@ -432,7 +432,7 @@ class Engine(object):
         all_input = self.concate(inputs_blocks)
         all_gt = self.concate(gt_blocks)
         ##TODO: SAVE DIR FOR RESULTS
-        save_dir = f"/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/GLORIA/results/{self.opt.arch}/"
+        save_dir = f"/home/lofty/CODE/HyperSIGMA-fork/ImageDenoising/data/HSI_Data/Hyperspectral_Project/GRIZZLY/results/{self.opt.arch}/"
         print(save_dir)
         save_target = os.path.join(save_dir, f"{self.opt.arch}_{os.path.basename(self.opt.testdir)}.mat")
         
