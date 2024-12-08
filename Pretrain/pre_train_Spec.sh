@@ -1,0 +1,13 @@
+python main_pretrain_Spec.py \
+--model 'spec_mae_b' \
+--norm_pix_loss \
+--data_path /home/lofty/CODE/HyperSIGMA-fork/Pretrain/data/Spat \
+--output_dir /home/lofty/CODE/HyperSIGMA-fork/Pretrain/model \
+--log_dir /home/lofty/CODE/HyperSIGMA-fork/Pretrain/logs \
+--blr 1.5e-4 \
+--batch_size 16 \
+--gpu_num 1 \
+--epochs 10 \
+--mask_ratio 0.75 \
+--warmup_epochs 1 \
+--use_ckpt 'True'
